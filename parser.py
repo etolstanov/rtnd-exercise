@@ -9,9 +9,6 @@ positional arguments.
 '''
 class UrlParser(object):
     def __init__(self, url_format, url_instance):
-        if not url_format or not url_instance:
-            raise Exception('url_format/url_instance are both mandatory.')
-
         self.url_format = url_format
         self.url_instance = url_instance        
         self.keys = {}
@@ -54,7 +51,10 @@ class UrlParser(object):
         return json.dumps(self.keys, indent=4, sort_keys=False)
 
 if __name__ == '__main__':
-    try:        
+    try:
+        if not 'URL_FORMAT' in os.environ or not 'URL_INSTANCE' in os.environ:
+            raise Exception('URL_FORMAT/URL_INSTANCE are both mandatory')
+            
         u = UrlParser(url_format=os.environ['URL_FORMAT'],
                 url_instance=os.environ['URL_INSTANCE'])
         print(u)
